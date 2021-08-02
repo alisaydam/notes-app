@@ -1,11 +1,18 @@
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:notes_firebase/domain/core/errors.dart';
 import 'package:notes_firebase/domain/core/failures.dart';
 
 @immutable
 abstract class ValueObject<T> {
   const ValueObject();
-  Either<ValueFaliure<T>, T> get value;
+  Either<ValueFailure<T>, T> get value;
+
+  //Throws [UnenexpectedValueError] containing the [ValueFailure]
+  T getOrCrash() {
+    return value.fold((f) => throw UnenexpectedValueError(f), id);
+    //id receives something and return it unchanged. same as writing (right)=>right
+  }
 
   bool isValid() => value.isRight();
 
