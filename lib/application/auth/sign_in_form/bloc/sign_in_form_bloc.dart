@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:notes_firebase/domain/auth/auth_failure.dart';
@@ -65,7 +66,7 @@ class SignInFormBloc extends Bloc<SignInFormEvent, SignInFormState> {
     })
         forwardedCall,
   ) async* {
-    Either<AuthFailure, Unit>? failureOrSuccess;
+    late Either<AuthFailure, Unit> failureOrSuccess;
 
     final isEmailValid = state.emailAddress.isValid();
     final isPasswordValid = state.password.isValid();
@@ -80,12 +81,17 @@ class SignInFormBloc extends Bloc<SignInFormEvent, SignInFormState> {
         emailAddress: state.emailAddress,
         password: state.password,
       );
+      yield state.copyWith(
+        isSubmitting: false,
+        showErrorMessage: true,
+        authFailureOrSuccessOption: optionOf(failureOrSuccess),
+      );
+    } else {
+      yield state.copyWith(
+        isSubmitting: false,
+        showErrorMessage: true,
+        authFailureOrSuccessOption: none(),
+      );
     }
-
-    yield state.copyWith(
-      isSubmitting: false,
-      showErrorMessage: true,
-      authFailureOrSuccessOption: optionOf!(failureOrSuccess),
-    );
   }
 }

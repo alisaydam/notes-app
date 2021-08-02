@@ -1,4 +1,3 @@
-import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_firebase/application/auth/sign_in_form/bloc/sign_in_form_bloc.dart';
@@ -10,6 +9,7 @@ class SignInForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<SignInFormBloc, SignInFormState>(
       listener: (context, state) {
+        /*
         state.authFailureOrSuccessOption.fold(
           () {},
           (either) => either.fold(
@@ -29,6 +29,7 @@ class SignInForm extends StatelessWidget {
             },
           ),
         );
+     */
       },
       builder: (context, state) {
         return Form(
